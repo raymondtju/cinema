@@ -17,4 +17,13 @@ model Movies {
   ticket_price Int?
   created_at   DateTime? @default(now()) @db.Timestamptz(6)
   aired_at     DateTime? @db.Timestamptz(6)
+  Seat         Seat[]
+}
+
+model Seat {
+  id         Int    @id @default(autoincrement())
+  movie_id   Int
+  reserved   Int[]
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  Movies     Movies    @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
