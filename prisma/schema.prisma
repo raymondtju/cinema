@@ -1,3 +1,4 @@
+// dotenv -e .env.local -- prisma db push
 generator client {
   provider = "prisma-client-js"
 }
@@ -26,4 +27,12 @@ model Seat {
   reserved   Int[]
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   Movies     Movies    @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id         Int    @id @default(autoincrement())
+  username   String    @unique
+  name       String?
+  age        Int?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
 }

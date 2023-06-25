@@ -17,15 +17,19 @@ export async function getMovie(id: string) {
 
 export async function getReservedSeat(movie_id: string) {
   try {
-    const find = prisma.seat.findFirst({
+    const find = await prisma.seat.findFirst({
       where: {
         movie_id: parseInt(movie_id),
       },
     });
 
-    if (!find) throw new Error("Movie not found.");
+    if (!find)
+      return {
+        reserved: [],
+      };
     return find;
   } catch (error) {
-    throw new Error("Something went wrong.");
+    console.log(error);
+    return error;
   }
 }

@@ -1,5 +1,4 @@
 import MoviesContainer from "@/components/movies-container";
-import Image from "next/image";
 
 async function getMovies() {
   try {
@@ -13,11 +12,10 @@ async function getMovies() {
 }
 
 export default async function Home() {
-  const movies = await getMovies()
-  return (
-    <main className="">
-      <h1>Cinema</h1>
+  const movies = await getMovies();
 
+  return (
+    <main>
       <MoviesContainer movies={movies} />
     </main>
   );
