@@ -1,12 +1,20 @@
+import { getCurrentUser } from "@/lib/actions/user";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { movie_id, seat } = await req.json();
+  const user = await getCurrentUser();
+  if (!user)
+    return NextResponse.json(
+      { message: "Enter username to checkout" },
+      { status: 400 }
+    );
+
+  const { movie, seat } = await req.json();
   try {
     const check = await prisma.seat.findFirst({
       where: {
-        movie_id,
+        movie_id: movie.id,
       },
     });
     if (check) {
@@ -21,6 +29,25 @@ export async function POST(req: Request) {
         }
       }
 
+      if (movie) {
+        await prisma.order.create({
+          data: {
+            reserved_seat: seat,
+            User: {
+              connect: {
+                id: user.id,
+              },
+            },
+            Movies: {
+              connect: {
+                id: movie.id,
+              },
+            },
+            total_payment: (movie?.ticket_price as number) * seat.length,
+          },
+        });
+      }
+
       await prisma.seat.update({
         where: {
           id: check.id,
@@ -30,7 +57,7 @@ export async function POST(req: Request) {
         },
       });
       return NextResponse.json(
-        { message: "Checkout movie successfull" },
+        { message: "Successful checkout movie." },
         { status: 200 }
       );
     }
@@ -40,14 +67,30 @@ export async function POST(req: Request) {
         reserved: seat,
         Movies: {
           connect: {
-            id: movie_id,
+            id: movie.id,
           },
         },
       },
     });
+    await prisma.order.create({
+      data: {
+        reserved_seat: seat,
+        User: {
+          connect: {
+            id: user.id,
+          },
+        },
+        Movies: {
+          connect: {
+            id: movie.id,
+          },
+        },
+        total_payment: (movie?.ticket_price as number) * seat.length,
+      },
+    });
 
     return NextResponse.json(
-      { message: "Checkout movie successfull" },
+      { message: "Successful checkout movie." },
       { status: 200 }
     );
   } catch (error) {

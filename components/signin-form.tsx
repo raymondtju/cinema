@@ -5,6 +5,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import Loading from "./ui/icons/loading";
+import { Button } from "./ui/button";
+import { rc } from "@/lib/utils";
 
 const SigninForm = () => {
   const [username, setUsername] = useState("");
@@ -13,7 +16,7 @@ const SigninForm = () => {
 
   return (
     <>
-      <Toaster />
+      <Toaster position="top-center" />
       <form
         className="space-y-6"
         onSubmit={async (e) => {
@@ -28,7 +31,7 @@ const SigninForm = () => {
             toast.error(JSON.parse(sign?.error as string)?.message);
             setLoading(false);
           } else {
-            toast.success("Successfully create username.");
+            toast.success("Welcome to cinema.");
             setTimeout(() => {
               router.push("/");
             }, 2000);
@@ -59,13 +62,24 @@ const SigninForm = () => {
         </div>
 
         <div>
-          <button
+          <Button
             type="submit"
-            className={clsx("flex w-full justify-center rounded-md bg-purple-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", loading && "bg-purple-300")}
+            className={rc(
+              loading
+                ? "bg-purple-300 cursor-wait"
+                : "bg-purple-600 hover:bg-purple-500", "w-full"
+            )}
             disabled={loading}
           >
-            Sign in
-          </button>
+            {loading ? (
+              <>
+                <Loading />
+                Loading
+              </>
+            ) : (
+              "Continue"
+            )}
+          </Button>
         </div>
       </form>
     </>

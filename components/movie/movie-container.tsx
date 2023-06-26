@@ -1,15 +1,19 @@
 "use client";
 
-import { Movies, Seat } from "@prisma/client";
-import AddSeat from "./add-seat";
+import { Movies, Seat, User } from "@prisma/client";
 import { Toaster } from "sonner";
+import Checkout from "./checkout";
+import { Button, buttonVariants } from "../ui/button";
+import Link from "next/link";
+import { rc } from "@/lib/utils";
 
 interface MovieContainerProps {
+  user: User | null;
   movie: Movies;
-  reservedSeat: Seat | null;
+  reservedSeat: Seat | { reserved: number[] } | null;
 }
 
-const MovieContainer = ({ movie, reservedSeat }: MovieContainerProps) => {
+const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
   return (
     <>
       <Toaster />
@@ -70,7 +74,7 @@ const MovieContainer = ({ movie, reservedSeat }: MovieContainerProps) => {
           <div className="mt-4 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
-              {movie.ticket_price}
+              IDR {movie.ticket_price}
             </p>
 
             {/* Reviews */}
@@ -201,7 +205,19 @@ const MovieContainer = ({ movie, reservedSeat }: MovieContainerProps) => {
                 </RadioGroup>
             </div> */}
 
-              <AddSeat movie_id={movie.id} reservedSeat={reservedSeat} />
+              {user ? (
+                <Checkout movie={movie} reservedSeat={reservedSeat} />
+              ) : (
+                <Link
+                  className={rc(
+                    buttonVariants({ variant: "default" }),
+                    "w-full"
+                  )}
+                  href="/auth/signin"
+                >
+                  Sign in to checkout
+                </Link>
+              )}
             </form>
           </div>
 

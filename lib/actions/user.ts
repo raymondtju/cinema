@@ -21,7 +21,24 @@ export async function getCurrentUser() {
       return null;
     }
 
-    return currentUser
+    return currentUser;
+  } catch (error: any) {
+    return null;
+  }
+}
+
+export async function getOrderHistory(userId: number) {
+  try {
+    const get = await prisma.order.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        Movies: true,
+        User: true,
+      },
+    });
+    return get;
   } catch (error: any) {
     return null;
   }

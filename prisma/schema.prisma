@@ -1,4 +1,3 @@
-// dotenv -e .env.local -- prisma db push
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,7 +8,7 @@ datasource db {
 }
 
 model Movies {
-  id           Int    @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   title        String?
   description  String?
   release_date DateTime? @db.Timestamptz(6)
@@ -18,11 +17,12 @@ model Movies {
   ticket_price Int?
   created_at   DateTime? @default(now()) @db.Timestamptz(6)
   aired_at     DateTime? @db.Timestamptz(6)
+  Order        Order[]
   Seat         Seat[]
 }
 
 model Seat {
-  id         Int    @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   movie_id   Int
   reserved   Int[]
   created_at DateTime? @default(now()) @db.Timestamptz(6)
@@ -30,9 +30,22 @@ model Seat {
 }
 
 model User {
-  id         Int    @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   username   String    @unique
   name       String?
   age        Int?
   created_at DateTime? @default(now()) @db.Timestamptz(6)
+  balance    Int?      @default(0)
+  Order      Order[]
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  movie_id      Int
+  reserved_seat Int[]
+  total_payment Int
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  Movies        Movies    @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User          User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

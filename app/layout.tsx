@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/actions/user";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/navbar";
+import { rc } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,16 +16,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="max-w-[1280px] mx-auto">
-          <Navbar user={user} />
-          {children}
-        </div>
-      </body>
+      <body className={rc(inter.className)}>{children}</body>
     </html>
   );
 }

@@ -15,18 +15,29 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         // try {
+        const username = credentials?.username as string;
+        if (username.length < 4) {
+          throw new Error(
+            JSON.stringify({
+              message: "Minimum username 4 letter.",
+              status: false,
+            })
+          );
+        }
+
         const check = await prisma.user.findFirst({
           where: {
             username: credentials?.username as string,
           },
         });
         if (check) {
-          throw new Error(
-            JSON.stringify({
-              message: "Username has been used.",
-              status: false,
-            })
-          );
+          return check;
+          // throw new Error(
+          //   JSON.stringify({
+          //     message: "Username has been used.",
+          //     status: false,
+          //   })
+          // );
         }
 
         const create = await prisma.user.create({

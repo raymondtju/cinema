@@ -1,54 +1,94 @@
-import { User } from "@prisma/client";
+/* eslint-disable @next/next/no-img-element */
+"use client";
+
 import { Clapperboard } from "lucide-react";
 import Link from "next/link";
-
-const menu = [
-  {
-    title: "Movies",
-    path: "/",
-  },
-];
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import { User } from "@prisma/client";
+import { buttonVariants } from "./ui/button";
+import { rc } from "@/lib/utils";
+import React, { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 function Navbar({ user }: { user: User | null }) {
-  return (
-    <nav className="sticky z-10 top-0 flex items-center justify-between bg-white/95 p-4 dark:bg-black lg:px-6">
-      {/* <div className="block w-1/3 md:hidden">
-        <MobileMenu menu={menu} />
-      </div> */}
-      <div className="flex justify-self-center md:w-1/3 md:justify-self-start">
-        <div className="md:mr-4">
-          <Link href="/" aria-label="Go back home">
-            <Clapperboard className="transition-transform hover:scale-110 font-bold">
-              Cinema
-            </Clapperboard>
-          </Link>
-        </div>
-        {menu.length ? (
-          <ul className="hidden md:flex md:items-center">
-            {menu.map((item) => (
-              <li key={item.title}>
-                <Link
-                  href={item.path}
-                  className="rounded-lg px-2 py-1 text-gray-800 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400"
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-      {/* <div className="hidden w-1/3 md:block">
-        <Search />
-      </div> */}
+  const router = useRouter();
 
-      {/* <div className="flex w-1/3 justify-end">
-        <Suspense fallback={<CartIcon className="h-6" />}>
-          <Cart />
-        </Suspense>
-      </div> */}
-      <div className="flex w-1/3 justify-end">{user?.username}</div>
-    </nav>
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isIntersecting, setIntersecting] = useState(true);
+
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setIntersecting(entry.isIntersecting)
+    );
+
+    observer.observe(ref.current);
+    return () => {
+      setIntersecting(false);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className={rc("relative isolate overflow-hidden z-40")}>
+      <header
+        className={rc(
+          "fixed backdrop-blur-sm inset-x-0 top-0 z-50",
+          isIntersecting ? "bg-transparent" : "bg-white/95"
+        )}
+      >
+        <nav
+          className="flex items-center justify-between py-4 px-4 lg:px-8 max-w-[1280px] mx-auto"
+          aria-label="Global"
+        >
+          <div className="flex">
+            <Link href="/" className="-m-1.5 p-1.5 items-center flex gap-1.5 font-bold">
+              <span className="sr-only">Cinema</span>
+              <Clapperboard className="w-7 h-7 inline-block" /> Cinema
+            </Link>
+          </div>
+
+          <div className="">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>{user?.username}</DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => router.push("/dashboard/order-history")}
+                  >
+                    Order History
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                className={rc(buttonVariants({ variant: "default" }))}
+                href="/auth/signin"
+              >
+                Signin
+              </Link>
+            )}
+          </div>
+        </nav>
+      </header>
+    </div>
   );
 }
 export default Navbar;

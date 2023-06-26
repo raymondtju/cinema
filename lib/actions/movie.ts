@@ -25,11 +25,11 @@ export async function getReservedSeat(movie_id: string) {
 
     if (!find)
       return {
-        reserved: [],
+        reserved: [] as number[],
       };
     return find;
   } catch (error) {
     console.log(error);
-    return error;
+    return null;
   }
 }

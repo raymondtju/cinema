@@ -1,17 +1,18 @@
 "use client";
 
 import { revalPath } from "@/lib/revalidate";
-import { Seat } from "@prisma/client";
+import { Movies, Seat } from "@prisma/client";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 
-const AddSeat = ({
-  movie_id,
+const Checkout = ({
+  movie,
   reservedSeat,
 }: {
-  movie_id: number;
-  reservedSeat: Seat | null;
+  movie: Movies;
+  reservedSeat: Seat | { reserved: number[] } | null;
 }) => {
   const num = [];
   for (let x = 0; x < 64; x++) num.push(x);
@@ -30,8 +31,11 @@ const AddSeat = ({
     if (selectedSeat.includes(id)) {
       const temp = selectedSeat.filter((x) => x != id);
       setSelectedSeat(temp);
-    } else if (selectedSeat.length > 5) {
-      console.log("huhu");
+    } else if (
+      selectedSeat.filter((seat) => !reservedSeat?.reserved.includes(seat))
+        .length > 5
+    ) {
+      toast.error("Maximum selected seat is 6.");
     } else {
       setSelectedSeat([...selectedSeat, id]);
     }
@@ -48,7 +52,7 @@ const AddSeat = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          movie_id,
+          movie,
           seat: selectedSeat.filter(
             (seat) => !reservedSeat?.reserved.includes(seat)
           ),
@@ -57,7 +61,7 @@ const AddSeat = ({
       {
         loading: "Loading...",
         success: () => {
-          revalPath("/movie" + movie_id);
+          revalPath("/movie" + movie.id);
           return "Seat reserved";
         },
         error: (error) => error,
@@ -85,15 +89,18 @@ const AddSeat = ({
           })}
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        className="w-full mt-3"
         onClick={(e) => handleCheckout(e)}
       >
-        Checkout
-      </button>
+        Checkout -{" "}
+        {(movie.ticket_price as number) *
+          selectedSeat.filter((seat) => !reservedSeat?.reserved.includes(seat))
+            .length}
+      </Button>
     </div>
   );
 };
 
-export default AddSeat;
+export default Checkout;
