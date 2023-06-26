@@ -1,20 +1,21 @@
 import { prisma } from "@/lib/prisma";
-import NextAuth, { AuthOptions, Awaitable } from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
       credentials: {
         username: {
-          label: "Username",
+          type: "text",
+        },
+        age: {
           type: "text",
         },
       },
+
       async authorize(credentials) {
-        // try {
         const username = credentials?.username as string;
         if (username.length < 4) {
           throw new Error(
@@ -31,30 +32,19 @@ export const authOptions: AuthOptions = {
           },
         });
         if (check) {
-          return check;
-          // throw new Error(
-          //   JSON.stringify({
-          //     message: "Username has been used.",
-          //     status: false,
-          //   })
-          // );
+          return check as any;
         }
 
         const create = await prisma.user.create({
           data: {
             username: credentials?.username as string,
+            age: parseInt(credentials?.age as string),
           },
         });
-        return create;
-        // }
-        // catch (error) {
-        //   console.log(error);
-        //   throw new Error(JSON.stringify({ error: error, status: false }));
-        // }
+        return create as any;
       },
     }),
   ],
-
   pages: {
     signIn: "/auth/signin",
   },
@@ -62,13 +52,15 @@ export const authOptions: AuthOptions = {
     jwt: async ({ token, user }) => {
       if (user) {
         token.username = user.username;
+        token.age = user.age;
       }
 
       return token;
     },
-    session: ({ session, token, user }) => {
+    session: ({ session, token }) => {
       if (token) {
         session.user.username = token.username;
+        session.user.age = token.age;
       }
       return session;
     },

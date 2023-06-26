@@ -21,10 +21,19 @@ const MoviesContainer = ({ movies }: MoviesContainerProps) => {
                   className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>
-              <h3 className="mt-4 text-sm text-gray-700">{movie.title}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">
-                IDR {movie.ticket_price}
-              </p>
+              <div className="relative w-full">
+                <div className="w-10/12">
+                  <h3 className="mt-4 text-sm text-gray-700">{movie.title}</h3>
+                  <p className="mt-1 text-lg font-medium text-gray-900">
+                    IDR {movie.ticket_price}
+                  </p>
+                </div>
+                <div className="absolute right-0 top-1.5 ">
+                  <div className="flex justify-center items-center w-6 h-6 bg-indigo-500 text-white rounded-xl p-4">
+                    <span className="text-xs"> {movie.age_rate}</span>
+                  </div>
+                </div>
+              </div>
             </a>
           );
         })}
