@@ -80,7 +80,7 @@ async function OrderHistoryPage() {
               <div className="flex gap-x-4">
                 <img
                   className="h-12 w-12 flex-none rounded-full bg-gray-50"
-                  src={order.Movies.poster}
+                  src={order.Movies.poster as string}
                   alt=""
                 />
                 <div className="min-w-0 flex-auto">

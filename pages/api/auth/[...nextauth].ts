@@ -8,9 +8,11 @@ export const authOptions: AuthOptions = {
       name: "Credentials",
       credentials: {
         username: {
+          label: "username",
           type: "text",
         },
         age: {
+          label: "Age",
           type: "text",
         },
       },
