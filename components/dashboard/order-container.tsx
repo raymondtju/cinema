@@ -7,15 +7,6 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import Loading from "../ui/loading";
 
-function formatDate(date: Date) {
-  // const options = ;
-  return new Date(date).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
 const OrderContainer = ({ orderHistory }: { orderHistory: any[] | null }) => {
   const [loading, setLoading] = useState(false);
 
