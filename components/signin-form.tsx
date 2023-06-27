@@ -4,8 +4,8 @@ import clsx from "clsx";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Toaster, toast } from "sonner";
-import Loading from "./ui/icons/loading";
+import { toast } from "sonner";
+import Loading from "./ui/loading";
 import { Button } from "./ui/button";
 import { rc } from "@/lib/utils";
 import { randomUsername } from "@/lib/faker";
@@ -21,7 +21,6 @@ const SigninForm = () => {
 
   return (
     <>
-      <Toaster position="top-center" />
       <form className="space-y-6">
         <div>
           <label
@@ -98,9 +97,10 @@ const SigninForm = () => {
                 setLoading(false);
               } else {
                 toast.success("Welcome to cinema.");
+                setLoading(false);
                 setTimeout(() => {
-                  router.push("/");
-                }, 1500);
+                  window.location.replace("/");
+                }, 1000);
               }
             }}
             disabled={loading}

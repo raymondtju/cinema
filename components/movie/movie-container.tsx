@@ -1,7 +1,6 @@
 "use client";
 
 import { Movies, Seat, User } from "@prisma/client";
-import { Toaster } from "sonner";
 import Checkout from "./checkout";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
@@ -16,7 +15,6 @@ interface MovieContainerProps {
 const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
   return (
     <>
-      <Toaster richColors />
       <div className="grid lg:grid-cols-3 lg:gap-4 grid-cols-1">
         {/* <nav aria-label="Breadcrumb">
           <ol

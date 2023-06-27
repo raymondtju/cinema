@@ -1,16 +1,6 @@
 import MoviesContainer from "@/components/movies-container";
 import Link from "next/link";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import SigninForm from "@/components/signin-form";
-
 async function getMovies() {
   try {
     const get = await fetch("http://localhost:3000/api/movies", {
@@ -27,14 +17,6 @@ export default async function Home() {
 
   return (
     <>
-      {/* <Dialog open={true}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Signin</DialogTitle>
-          </DialogHeader>
-
-        </DialogContent>
-      </Dialog> */}
       <div className="relative isolate px-6 lg:px-8">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -71,18 +53,19 @@ export default async function Home() {
               showtimes, choose seats, and secure their reservations in seconds.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
+              <Link
                 href="#"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Get started
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="https://github.com/raymondtju/cinema"
                 className="text-sm font-semibold leading-6 text-gray-900"
+                target="_blank"
               >
                 Learn more <span aria-hidden="true">→</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import Loading from "../ui/loading";
 
 const Checkout = ({
   movie,
@@ -14,6 +15,8 @@ const Checkout = ({
   movie: Movies;
   reservedSeat: Seat | { reserved: number[] } | null;
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const num = [];
   for (let x = 0; x < 64; x++) num.push(x);
 
@@ -45,6 +48,7 @@ const Checkout = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
+    setLoading(true);
     const checkout = await fetch("/api/movie/checkout", {
       method: "POST",
       headers: {
@@ -59,8 +63,10 @@ const Checkout = ({
     });
     const json = await checkout.json();
     if (checkout.status != 200) {
+      setLoading(false);
       toast.error(json?.message);
     } else {
+      setLoading(false);
       revalPath("/movie" + movie.id);
       toast.success(json?.message);
     }
@@ -90,11 +96,23 @@ const Checkout = ({
         type="submit"
         className="w-full mt-3"
         onClick={(e) => handleCheckout(e)}
+        disabled={loading}
       >
-        Checkout -{" "}
-        {(movie.ticket_price as number) *
-          selectedSeat.filter((seat) => !reservedSeat?.reserved.includes(seat))
-            .length}
+        {loading ? (
+          <Loading />
+        ) : (
+          <p>
+            Checkout
+            {selectedSeat.filter(
+              (seat) => !reservedSeat?.reserved.includes(seat)
+            ).length !== 0 &&
+              " - " +
+                (movie.ticket_price as number) *
+                  selectedSeat.filter(
+                    (seat) => !reservedSeat?.reserved.includes(seat)
+                  ).length}
+          </p>
+        )}
       </Button>
     </div>
   );

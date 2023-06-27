@@ -4,10 +4,13 @@ import React from "react";
 import { User } from "@prisma/client";
 import { Button } from "../ui/button";
 import { revalPath } from "@/lib/revalidate";
+import Loading from "../ui/loading";
+import { toast } from "sonner";
 
 const SettingsContainer = ({ user }: { user: User | null }) => {
   const [age, setAge] = React.useState("");
   const [name, setName] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     setAge(user?.age?.toString() as string);
@@ -92,8 +95,9 @@ const SettingsContainer = ({ user }: { user: User | null }) => {
             className="w-full"
             onClick={async (e) => {
               e.preventDefault();
+              setLoading(true);
 
-              await fetch("/api/settings", {
+              const upt = await fetch("/api/settings", {
                 method: "PATCH",
                 headers: {
                   "Content-Type": "application/json",
@@ -103,11 +107,20 @@ const SettingsContainer = ({ user }: { user: User | null }) => {
                   age,
                 }),
               });
+              const json = await upt.json();
 
-              revalPath("/dashboard");
+              if (upt.status !== 200) {
+                setLoading(false);
+                toast.error(json.message);
+              } else {
+                setLoading(false);
+                toast.success(json.message);
+                revalPath("/dashboard");
+              }
             }}
+            disabled={loading}
           >
-            Save
+            {loading ? <Loading /> : "Save"}
           </Button>
         </div>
       </form>
