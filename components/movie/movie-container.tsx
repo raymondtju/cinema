@@ -16,7 +16,7 @@ interface MovieContainerProps {
 const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
   return (
     <>
-      <Toaster />
+      <Toaster richColors />
       <div className="grid lg:grid-cols-3 lg:gap-4 grid-cols-1">
         {/* <nav aria-label="Breadcrumb">
           <ol

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Clapperboard } from "lucide-react";
+import { Clapperboard, LogOut } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -50,7 +50,10 @@ function Navbar({ user }: { user: User | null }) {
           aria-label="Global"
         >
           <div className="flex">
-            <Link href="/" className="-m-1.5 p-1.5 items-center flex gap-1.5 font-bold">
+            <Link
+              href="/"
+              className="-m-1.5 p-1.5 items-center flex gap-1.5 font-bold"
+            >
               <span className="sr-only">Cinema</span>
               <Clapperboard className="w-7 h-7 inline-block" /> Cinema
             </Link>
@@ -58,25 +61,21 @@ function Navbar({ user }: { user: User | null }) {
 
           <div className="">
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger>{user?.username}</DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => router.push("/dashboard/order-history")}
-                  >
-                    Order History
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                  >
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex gap-1 items-center">
+                <Link
+                  className={rc(buttonVariants({ variant: "default" }))}
+                  href="/dashboard"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  className={rc(buttonVariants({ variant: "default" }))}
+                  href="?logout=true"
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                >
+                  <LogOut className="w-4 h-4" />
+                </Link>
+              </div>
             ) : (
               <Link
                 className={rc(buttonVariants({ variant: "default" }))}

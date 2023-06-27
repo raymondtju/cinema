@@ -2,6 +2,7 @@
 "use client";
 
 import { Movies } from "@prisma/client";
+import Link from "next/link";
 
 interface MoviesContainerProps {
   movies: Movies[];

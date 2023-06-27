@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  th {
+    padding: 16px 0px;
+    font-size: medium;
+    font-weight: 500;
+  }
+
+  td {
+    padding: 8px 0;
+  }
+}

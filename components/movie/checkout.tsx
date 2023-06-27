@@ -45,28 +45,25 @@ const Checkout = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
-    toast.promise(
-      fetch("/api/movie/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          movie,
-          seat: selectedSeat.filter(
-            (seat) => !reservedSeat?.reserved.includes(seat)
-          ),
-        }),
+    const checkout = await fetch("/api/movie/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        movie,
+        seat: selectedSeat.filter(
+          (seat) => !reservedSeat?.reserved.includes(seat)
+        ),
       }),
-      {
-        loading: "Loading...",
-        success: () => {
-          revalPath("/movie" + movie.id);
-          return "Seat reserved";
-        },
-        error: (error) => error,
-      }
-    );
+    });
+    const json = await checkout.json();
+    if (checkout.status != 200) {
+      toast.error(json?.message);
+    } else {
+      revalPath("/movie" + movie.id);
+      toast.success(json?.message);
+    }
   }
 
   return (

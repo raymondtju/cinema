@@ -1,6 +1,16 @@
 import MoviesContainer from "@/components/movies-container";
 import Link from "next/link";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import SigninForm from "@/components/signin-form";
+
 async function getMovies() {
   try {
     const get = await fetch("http://localhost:3000/api/movies", {
@@ -17,6 +27,14 @@ export default async function Home() {
 
   return (
     <>
+      {/* <Dialog open={true}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Signin</DialogTitle>
+          </DialogHeader>
+
+        </DialogContent>
+      </Dialog> */}
       <div className="relative isolate px-6 lg:px-8">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
