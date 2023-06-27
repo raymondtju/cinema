@@ -12,9 +12,11 @@ import { X } from "lucide-react";
 const Checkout = ({
   movie,
   reservedSeat,
+  balance,
 }: {
   movie: Movies;
   reservedSeat: Seat | { reserved: number[] } | null;
+  balance: number | null;
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -32,6 +34,16 @@ const Checkout = ({
     id: number
   ) {
     e.preventDefault();
+    // if (
+    //   (balance as number) <
+    //   selectedSeat.filter((seat) => !reservedSeat?.reserved.includes(seat))
+    //     .length *
+    //     ((movie.ticket_price as number) + (movie.ticket_price as number))
+    // ) {
+    //   toast.error("Balance not enough");
+    //   return;
+    // }
+    // console.log(1);
     if (selectedSeat.includes(id)) {
       const temp = selectedSeat.filter((x) => x != id);
       setSelectedSeat(temp);
@@ -68,6 +80,7 @@ const Checkout = ({
       toast.error(json?.message);
     } else {
       setLoading(false);
+      revalPath("/movie");
       revalPath("/movie" + movie.id);
       toast.success(json?.message);
     }
@@ -116,7 +129,7 @@ const Checkout = ({
             {selectedSeat.filter(
               (seat) => !reservedSeat?.reserved.includes(seat)
             ).length !== 0 &&
-              " - " +
+              " - IDR " +
                 (movie.ticket_price as number) *
                   selectedSeat.filter(
                     (seat) => !reservedSeat?.reserved.includes(seat)

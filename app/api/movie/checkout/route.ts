@@ -23,6 +23,16 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+
+  if (
+    (user.balance as number) <
+    (movie?.ticket_price as number) * seat.length
+  ) {
+    return NextResponse.json(
+      { message: "Sufficient balance." },
+      { status: 400 }
+    );
+  }
   try {
     const check = await prisma.seat.findFirst({
       where: {
@@ -68,6 +78,18 @@ export async function POST(req: Request) {
           reserved: [...check?.reserved, ...seat],
         },
       });
+
+      await prisma.user.update({
+        where: {
+          username: user.username,
+        },
+        data: {
+          balance:
+            (user.balance as number) -
+            (movie?.ticket_price as number) * seat.length,
+        },
+      });
+
       return NextResponse.json(
         { message: "Successful checkout movie." },
         { status: 200 }
@@ -98,6 +120,17 @@ export async function POST(req: Request) {
           },
         },
         total_payment: (movie?.ticket_price as number) * seat.length,
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        username: user.username,
+      },
+      data: {
+        balance:
+          (user.balance as number) -
+          (movie?.ticket_price as number) * seat.length,
       },
     });
 

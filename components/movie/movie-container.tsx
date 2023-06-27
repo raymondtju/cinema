@@ -55,9 +55,12 @@ const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-8">
+            <div className="flex justify-end mb-3">
+              <p className="font-medium">Your Balance: IDR {user?.balance}</p>
+            </div>
             {user ? (
-              <Checkout movie={movie} reservedSeat={reservedSeat} />
+              <Checkout movie={movie} reservedSeat={reservedSeat} balance={user.balance} />
             ) : (
               <Link
                 className={rc(buttonVariants({ variant: "default" }), "w-full")}
