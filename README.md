@@ -5,6 +5,8 @@ This is a Simple Booking Cinema App created using NextJS 13.4 + Server Action, P
 [![Cinema](./public/ss.png)]([https://cn.recrav.com/])
 
 > **Warning**
+> Project is made based on Compfest 15 SEA candidate.
+> 
 > This project is still in development and is not ready for production use.
 
 ## Tech Stack
@@ -28,6 +30,7 @@ This is a Simple Booking Cinema App created using NextJS 13.4 + Server Action, P
 ## To Do
 
 - [ ] Add payment gateway (Midtrans/Xendit) to deposit testing
+- [ ] Code Refactoring
 - [ ] Configure UI more beautiful & responsive
 
 ## Installation
