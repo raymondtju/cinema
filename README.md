@@ -25,6 +25,11 @@ This is a Simple Booking Cinema App created using NextJS 13.4 + Server Action, P
 - User under movie age cannot booked ticket
 - Randomize username using faker-js
 
+## To Do
+
+- [ ] Add payment gateway (Midtrans/Xendit) to deposit testing
+- [ ] Configure UI more beautiful & responsive
+
 ## Installation
 
 ### 1. Clone the repository
