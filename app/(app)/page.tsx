@@ -86,6 +86,8 @@ export default async function Home() {
         <h1 className="text-2xl font-bold">Select movie to watch</h1>
       </header>
       <MoviesContainer movies={movies} />
+
+      <footer></footer>
     </>
   );
 }

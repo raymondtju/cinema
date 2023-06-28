@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { revalPath } from "@/lib/revalidate";
 import Loading from "../ui/loading";
+import Link from "next/link";
 
 function BalanceContainer({ user }: { user: User | null }) {
   const router = useRouter();
@@ -25,6 +26,8 @@ function BalanceContainer({ user }: { user: User | null }) {
   const [withAmou, setWithAmou] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [depoOpen, setDepoOpen] = useState(false);
+  const [withOpen, setWithOpen] = useState(false);
 
   async function handleBalance(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -50,7 +53,7 @@ function BalanceContainer({ user }: { user: User | null }) {
       setLoading(false);
       setOpen(false);
       toast.success(json.message || type + " successful");
-      router.back();
+      router.push("/dashboard");
     }
   }
 
@@ -62,11 +65,18 @@ function BalanceContainer({ user }: { user: User | null }) {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <Dialog>
-          <DialogTrigger
-            className={rc(buttonVariants({ variant: "default" }), "col-span-1")}
-          >
-            Deposit
+        <Dialog open={depoOpen}>
+          <DialogTrigger>
+            <Link
+              className={rc(
+                buttonVariants({ variant: "default" }),
+                "col-span-1 w-full"
+              )}
+              href="?type=deposit"
+              onClick={() => setDepoOpen(true)}
+            >
+              Deposit
+            </Link>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -115,11 +125,18 @@ function BalanceContainer({ user }: { user: User | null }) {
           </DialogContent>
         </Dialog>
 
-        <Dialog>
-          <DialogTrigger
-            className={rc(buttonVariants({ variant: "outline" }), "col-span-1")}
-          >
-            Withdrawal
+        <Dialog open={withOpen}>
+          <DialogTrigger>
+            <Link
+              className={rc(
+                buttonVariants({ variant: "outline" }),
+                "col-span-1 w-full"
+              )}
+              href="?type=withdrawal"
+              onClick={() => setWithOpen(true)}
+            >
+              Withdrawal
+            </Link>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

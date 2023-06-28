@@ -1,22 +1,29 @@
 "use client";
 
-import { Movies, Seat, User } from "@prisma/client";
+import { Movies, Order, Seat, User } from "@prisma/client";
 import Checkout from "./checkout";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
 import { formatDate, rc } from "@/lib/utils";
+import { FileHeart, MoveRight } from "lucide-react";
 
 interface MovieContainerProps {
   user: User | null;
   movie: Movies;
   reservedSeat: Seat | { reserved: number[] } | null;
+  recent: Order[] | null;
 }
 
-const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
+const MovieContainer = ({
+  user,
+  movie,
+  reservedSeat,
+  recent,
+}: MovieContainerProps) => {
   return (
     <>
-      <div className="grid lg:grid-cols-3 lg:gap-4 grid-cols-1">
-        <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg block mx-4 ">
+      <div className="grid lg:grid-cols-4 lg:gap-4 grid-cols-1 mx-4 gap-4">
+        <div className="aspect-h-5 aspect-w-3 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-10 xl:aspect-w-7 h-fit lg:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={movie.poster as string}
@@ -25,7 +32,7 @@ const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
           />
         </div>
 
-        <div className="mx-auto max-w-2xl px-4 pb-16 sm:px-6">
+        <div className="max-w-2xl px-4 pb-16 sm:px-6 lg:col-span-2">
           <div className="">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {movie.title}
@@ -56,11 +63,19 @@ const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
           </div>
 
           <div className="mt-8">
-            <div className="flex justify-end mb-3">
+            <div className="flex justify-end mb-3 items-center gap-4">
               <p className="font-medium">Your Balance: IDR {user?.balance}</p>
+              <Link href="/dashboard" className={rc(buttonVariants(), "h-8")}>
+                Deposit
+                <MoveRight className="ml-2 w-4 h-4" />
+              </Link>
             </div>
             {user ? (
-              <Checkout movie={movie} reservedSeat={reservedSeat} balance={user.balance} />
+              <Checkout
+                movie={movie}
+                reservedSeat={reservedSeat}
+                balance={user.balance}
+              />
             ) : (
               <Link
                 className={rc(buttonVariants({ variant: "default" }), "w-full")}
@@ -78,6 +93,38 @@ const MovieContainer = ({ user, movie, reservedSeat }: MovieContainerProps) => {
               <p className="text-base text-gray-900">{movie.description}</p>
             </div>
           </div>
+        </div>
+
+        <div className="max-w-full sm:max-w-xs rounded-lg border p-4 h-fit">
+          <h2 className="text-base font-semibold leading-7 text-gray-900">
+            Recent Order
+          </h2>
+
+          <ul className="mt-3 space-y-1">
+            {recent?.length !== 0 ? (
+              recent?.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <p className="flex gap-1.5 items-center font-medium">
+                      <FileHeart className="w-4 h-4" />
+                      {/* @ts-ignore  */}
+                      {item.User.username.slice(
+                        0,
+                        //  @ts-ignore
+                        item.User.username.length - 3
+                      ) + "***"}{" "}
+                      {item.payment_status != "canceled"
+                        ? "booked"
+                        : "canceled"}{" "}
+                      {item.reserved_seat.length} ticket
+                    </p>
+                  </li>
+                );
+              })
+            ) : (
+              <p>No recent order found</p>
+            )}
+          </ul>
         </div>
       </div>
     </>

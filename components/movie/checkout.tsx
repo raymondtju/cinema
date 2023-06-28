@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import Loading from "../ui/loading";
 import { X } from "lucide-react";
+import { rc } from "@/lib/utils";
 
 const Checkout = ({
   movie,
@@ -93,8 +94,8 @@ const Checkout = ({
           num.map((box) => {
             return (
               <button
-                className={clsx(
-                  "relative w-7 h-7 rounded-md bg-neutral-200 inline-block hover:bg-indigo-400 duration-200",
+                className={rc(
+                  "relative w-7 h-7 bg-neutral-200 rounded-md inline-block hover:bg-indigo-400 duration-200",
                   selectedSeat.includes(box) && "bg-indigo-400",
                   reservedSeat.reserved.includes(box) &&
                     "cursor-not-allowed bg-stone-700 text-stone-700 hover:bg-stone-700"

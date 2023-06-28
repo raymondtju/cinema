@@ -33,3 +33,26 @@ export async function getReservedSeat(movie_id: string) {
     return null;
   }
 }
+
+export async function getRecentOrder(movie_id: string) {
+  try {
+    const find = await prisma.order.findMany({
+      where: {
+        movie_id: parseInt(movie_id),
+      },
+      include: {
+        Movies: true,
+        User: true,
+      },
+    });
+
+    // if (!find)
+    //   return {
+    //     reserved: [] as number[],
+    //   };
+    return find;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

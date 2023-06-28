@@ -55,6 +55,7 @@ export async function POST(req: Request) {
         await prisma.order.create({
           data: {
             reserved_seat: seat,
+            payment_status: "success",
             User: {
               connect: {
                 id: user.id,
@@ -109,6 +110,7 @@ export async function POST(req: Request) {
     await prisma.order.create({
       data: {
         reserved_seat: seat,
+        payment_status: "success",
         User: {
           connect: {
             id: user.id,
