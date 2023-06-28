@@ -63,6 +63,7 @@ export default async function RootLayout(props: {
     <html lang="en">
       <Script
         id="cla"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             (function(c,l,a,r,i,t,y){
