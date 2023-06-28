@@ -1,5 +1,6 @@
 import MoviesContainer from "@/components/movies-container";
 import { baseUrl } from "@/lib/config";
+import { StarFilledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 async function getMovies() {
@@ -41,7 +42,8 @@ export default async function Home() {
                 target="_blank"
               >
                 <span className="absolute inset-0" aria-hidden="true" />
-                Github <span aria-hidden="true">&rarr;</span>
+                <StarFilledIcon className="text-yellow-400 inline w-4 h-4" />{" "}
+                Star on Github <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
           </div>
