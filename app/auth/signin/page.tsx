@@ -1,5 +1,3 @@
-"use client"
-
 import SigninForm from "@/components/signin-form";
 import { Metadata } from "next";
 
