@@ -44,7 +44,7 @@ git clone https://github.com/raymondtju/cinema
 ### 2. Install dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### 3. Create a `.env` file
