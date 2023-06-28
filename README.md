@@ -1,6 +1,6 @@
 # [Cinema](https://cn.recrav.com/)
 
-This is a Simple Booking Cinema App created using NextJS 13.4 + Server Action, Prisma ORM + Supabase, and Tailwind CSS. It was bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+An Open Source Simple Booking Cinema App created using NextJS 13.4 + Server Action, Prisma ORM + Supabase, and Tailwind CSS. It was bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 [![Cinema](./public/ss.png)]([https://cn.recrav.com/])
 
