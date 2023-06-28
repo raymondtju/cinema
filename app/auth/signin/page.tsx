@@ -1,13 +1,14 @@
 "use client"
 
-import Redirect from "@/components/redirect";
 import SigninForm from "@/components/signin-form";
+import { Metadata } from "next";
 
-import { getCurrentUser } from "@/lib/actions/user";
+export const metadata: Metadata = {
+  title: "Signin",
+  description: "Signin",
+}
 
 export default async function SigninPage() {
-  // const user = await getCurrentUser();
-  // if (user) return <Redirect path="/" />;
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

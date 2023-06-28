@@ -1,9 +1,10 @@
 import MoviesContainer from "@/components/movies-container";
+import { baseUrl } from "@/lib/config";
 import Link from "next/link";
 
 async function getMovies() {
   try {
-    const get = await fetch("http://localhost:3000/api/movies", {
+    const get = await fetch(baseUrl + "/api/movies", {
       method: "GET",
     });
     return await get.json();

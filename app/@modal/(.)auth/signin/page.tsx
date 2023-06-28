@@ -1,4 +1,3 @@
-import Modal from "@/components/modal";
 import SigninForm from "@/components/signin-form";
 
 import {
@@ -7,6 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Signin",
+  description: "Signin",
+}
 
 export default async function SigninModal() {
   return (
@@ -20,7 +25,3 @@ export default async function SigninModal() {
     </Dialog>
   );
 }
-
-// {/* <Modal>
-//   <SigninForm />
-// </Modal> */}

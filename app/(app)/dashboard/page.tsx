@@ -2,6 +2,12 @@ import SettingsContainer from "@/components/dashboard/settings-container";
 import OrderContainer from "@/components/dashboard/order-container";
 import { getCurrentUser, getOrderHistory } from "@/lib/actions/user";
 import BalanceContainer from "@/components/dashboard/balance-container";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Settings profile, show order history, and deposit or withdrawal.",
+}
 
 async function DashboardPage() {
   const user = await getCurrentUser();
