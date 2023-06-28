@@ -2,7 +2,7 @@
 
 An Open Source Simple Booking Cinema App created using NextJS 13.4 + Server Action, Prisma ORM + Supabase, and Tailwind CSS. It was bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-[![Cinema](./public/ss.png)]([https://cn.recrav.com/])
+https://github.com/raymondtju/cinema/assets/75233529/4eb9e63b-3672-41bf-8c97-e802c33985ac
 
 > **Warning**
 > Project is made based on Compfest 15 SEA candidate.
