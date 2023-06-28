@@ -5,6 +5,7 @@ import { rc } from "@/lib/utils";
 import Client from "@/components/client";
 import { siteConfig } from "@/lib/config";
 import { Metadata } from "next";
+import Script from "next/script";
 
 const manropeFont = LocalFont({
   src: "../assets/font/Manrope-VariableFont_wght.ttf",
@@ -60,6 +61,18 @@ export default async function RootLayout(props: {
 }) {
   return (
     <html lang="en">
+      <Script
+        id="cla"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "hqt9enop5a");
+          `,
+        }}
+      />
       <body className={rc(manropeFont.className)}>
         <Client />
         {props.modal}
